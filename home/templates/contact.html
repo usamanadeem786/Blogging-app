@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+
+{% block page_title %} Contact Page {% endblock %}
+
+{% block content %}
+
+<header>
+    <h1>Contact Us</h1>
+</header>
+
+<section>
+    <h2>Get in Touch</h2>
+
+    <form action="#" method="post">
+        <label for="name">Your Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="email">Your Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="message">Your Message:</label>
+        <textarea id="message" name="message" rows="4" required></textarea>
+        
+        <label for="image">Upload Image:</label>
+        <input type="file" id="image" name="image" accept="image/*">
+
+        <button type="submit">Send Message</button>
+    </form>
+
+    <div class="contact-info">
+        <h2>Contact Information</h2>
+        <p><strong>Usama Software House</strong></p>
+        <p>New Hamza Ghos, Sialkot, Pakistan</p>
+        <p>Email: info@usamasolution.com</p>
+        <p>Phone: +92 (336) 281-7890</p>
+    </div>
+</section>
+
+{% endblock %}

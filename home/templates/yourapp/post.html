@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+
+{% block page_title %} Post Page {% endblock %}
+
+{% block content %}
+
+<section id="post">
+    <h2>Post</h2>
+</section>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="text" name="name" placeholder="Name"><br><br>
+    <textarea rows="5" name="desc" placeholder="Description"></textarea><br><br>
+    <input type="file" name="file"><br><br>
+    <input type="submit" value="Save data">
+    <input type="submit" value="Show All data in below">
+</form>
+
+<!-- Display all posts -->
+<section id="all-posts">
+    <h2>All Posts</h2>
+    {% for post in posts %}
+        <div>
+            <h3>{{ post.name }}</h3>
+            <p>{{ post.desc }}</p>
+            <img src="{{ post.image.url }}" alt="{{ post.name }}">
+        </div><br><br><br><br><br><br><br><br>
+    {% endfor %}
+</section>
+
+{% endblock %}
