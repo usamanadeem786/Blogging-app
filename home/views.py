@@ -17,6 +17,11 @@ def about(request):
 def contact(request):
     return render(request, 'contact.html')
 
+def login(request):
+    return render(request, 'yourapp/login.html/', {'title': 'User Login'})
+
+def register(request):
+    return render(request, 'yourapp/register.html/', {'title': 'User Register'})
 # def post(request):
 #     return render(request, 'post.html')
 
