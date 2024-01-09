@@ -13,19 +13,56 @@
     <textarea rows="5" name="desc" placeholder="Description"></textarea><br><br>
     <input type="file" name="file"><br><br>
     <input type="submit" value="Save data">
-    <input type="submit" value="Show All data in below">
 </form>
 
 <!-- Display all posts -->
 <section id="all-posts">
     <h2>All Posts</h2>
+    {% if messages %}
+        {% for messgae in messages %}
+            <p>{{messgae | escape}}</p>
+        {% endfor %}
+    {% endif %}
     {% for post in posts %}
         <div>
             <h3>{{ post.name }}</h3>
             <p>{{ post.desc }}</p>
-            <img src="{{ post.image.url }}" alt="{{ post.name }}">
-        </div><br><br><br><br><br><br><br><br>
+            <img src="{{ post.image.url }}" alt="{{ post.name }}" width=500>
+            <p>Likes: {{ post.like_count }}</p>
+            <!-- Like button -->
+            <form method="post" action="{% url 'like_post' post.id %}">
+                {% csrf_token %}
+                <button type="submit">Like</button>
+            </form>
+            
+            <!-- Comment section -->
+            <form method="post" action="{% url 'comment_post' post.id %}">
+                {% csrf_token %}
+                <textarea rows="3" name="comment" placeholder="Add a comment"></textarea>
+                <button type="submit">Comment</button>
+            </form>
+            
+            <!-- Display comments for the post -->
+            {% for comment in post.comments.all %}
+            <div>
+                <p>{{ comment.user.username }}: {{ comment.text }}</p>
+                {% if comment.user == request.user %}
+                    <form method="post" action="{% url 'delete_comment' comment.id %}">
+                        {% csrf_token %}
+                        <button type="submit">Delete Comment</button>
+                    </form>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <!-- Delete button -->
+                <form method="post" action="{% url 'delete_post' post.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Delete Post</button>
+                </form>
+        </div><br><br>
     {% endfor %}
+    <br><br><br>
 </section>
 
 {% endblock %}
