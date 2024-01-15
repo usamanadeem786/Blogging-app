@@ -3,7 +3,7 @@
 {% block page_title %} Post Page {% endblock %}
 
 {% block content %}
-
+{% load static %}
 <section id="post">
     <h2>Post</h2>
 </section>
@@ -19,47 +19,57 @@
 <section id="all-posts">
     <h2>All Posts</h2>
     {% if messages %}
-        {% for messgae in messages %}
-            <p>{{messgae | escape}}</p>
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
         {% endfor %}
+    </ul>
     {% endif %}
-    {% for post in posts %}
+
+    {% for post in posts %} 
         <div>
             <h3>{{ post.name }}</h3>
             <p>{{ post.desc }}</p>
             <img src="{{ post.image.url }}" alt="{{ post.name }}" width=500>
+            <div class="post-container">
             <p>Likes: {{ post.like_count }}</p>
-            <!-- Like button -->
-            <form method="post" action="{% url 'like_post' post.id %}">
-                {% csrf_token %}
-                <button type="submit">Like</button>
-            </form>
-            
-            <!-- Comment section -->
-            <form method="post" action="{% url 'comment_post' post.id %}">
-                {% csrf_token %}
-                <textarea rows="3" name="comment" placeholder="Add a comment"></textarea>
-                <button type="submit">Comment</button>
-            </form>
-            
+
             <!-- Display comments for the post -->
+            <div class="comment-section">
             {% for comment in post.comments.all %}
             <div>
                 <p>{{ comment.user.username }}: {{ comment.text }}</p>
                 {% if comment.user == request.user %}
                     <form method="post" action="{% url 'delete_comment' comment.id %}">
                         {% csrf_token %}
-                        <button type="submit">Delete Comment</button>
+                        <button class="inline-form" type="submit">Delete Comment</button>
                     </form>
                 {% endif %}
             </div>
             {% endfor %}
+                </div>
+            </div>
+
+
+            <!-- Like button -->
+            <form class="inline-form" method="post" action="{% url 'like_post' post.id %}">
+                {% csrf_token %}
+                <button type="submit">Like</button>
+            </form>
+            
+            <!-- Comment section -->
+            <form class="inline-form" method="post" action="{% url 'comment_post' post.id %}">
+                {% csrf_token %}
+                <textarea class="inline-form" rows="3" name="comment" placeholder="Add a comment" style="float: right; width: 577px; height: 36px;"></textarea>
+                <button type="submit">Comment</button>
+            </form>
 
             <!-- Delete button -->
                 <form method="post" action="{% url 'delete_post' post.id %}">
                     {% csrf_token %}
-                    <button type="submit">Delete Post</button>
+                    <button type="submit" style="float: right;">Delete Post</button>
                 </form>
+            </div>
         </div><br><br>
     {% endfor %}
     <br><br><br>
