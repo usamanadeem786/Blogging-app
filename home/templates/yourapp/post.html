@@ -4,19 +4,31 @@
 
 {% block content %}
 {% load static %}
+<style>
+    #post {
+        position: relative;
+        height: 200px;
+        text-align: center;
+        color: black; /* Set text color */
+        background: url('/media/background.jpg') center/cover no-repeat; /* Set the background image */
+        padding: 140px 100px; /* Adjust padding as needed */
+    }
+    
+</style>
 <section id="post">
-    <h2>Post</h2>
+    <h1>Post</h1>
 </section>
-<form method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data" style="text-align: center; background-color: rgb(236, 236, 118);">
     {% csrf_token %}
-    <input type="text" name="name" placeholder="Name"><br><br>
-    <textarea rows="5" name="desc" placeholder="Description"></textarea><br><br>
-    <input type="file" name="file"><br><br>
-    <input type="submit" value="Save data">
+    <br><h1>Detail of the Post</h1>
+    <input style="text-align: center; width: 600px;" type="text" name="name" placeholder="Name"><br><br>
+    <textarea style="text-align: center; width: 600px;" rows="5" name="desc" placeholder="Description"></textarea><br><br>
+    <input style="margin: 0 auto; width: fit-content;" type="file" name="file"><br><br>
+    <button style="text-align: center;" aria-label="Send" id="send_post" type="submit" class="btn_white_border mt-4 btn btn-primary" style="z-index: 0; padding: 15px 30px; font-size: 20px;">Send Post</button><br><br>
 </form>
 
 <!-- Display all posts -->
-<section id="all-posts">
+<section id="all-posts" style="text-align: center;">
     <h2>All Posts</h2>
     {% if messages %}
     <ul class="messages">
@@ -32,17 +44,18 @@
             <p>{{ post.desc }}</p>
             <img src="{{ post.image.url }}" alt="{{ post.name }}" width=500>
             <div class="post-container">
-            <p>Likes: {{ post.like_count }}</p>
+                <p>Likes: {{ post.like_count }}&nbsp;&nbsp;&nbsp; Comments: {{ post.comments_count }}</p>
 
             <!-- Display comments for the post -->
             <div class="comment-section">
+            <h2>Your Comments</h2>
             {% for comment in post.comments.all %}
-            <div>
-                <p>{{ comment.user.username }}: {{ comment.text }}</p>
+            <div style="display: flex; justify-content: space-between;">
+                <p>{{ comment.user.username }}: {{ comment.text }}&nbsp;&nbsp;</p>
                 {% if comment.user == request.user %}
                     <form method="post" action="{% url 'delete_comment' comment.id %}">
                         {% csrf_token %}
-                        <button class="inline-form" type="submit">Delete Comment</button>
+                        <button style="float: right; background-color: rgb(61, 112, 110); color: white;" class="inline-form" type="submit">Delete Comment</button>
                     </form>
                 {% endif %}
             </div>
@@ -54,7 +67,7 @@
             <!-- Like button -->
             <form class="inline-form" method="post" action="{% url 'like_post' post.id %}">
                 {% csrf_token %}
-                <button type="submit">Like</button>
+                <button type="submit" style="background-color: rgb(65, 119, 234); color: white;">Like</button>
             </form>
             
             <!-- Comment section -->
@@ -67,7 +80,7 @@
             <!-- Delete button -->
                 <form method="post" action="{% url 'delete_post' post.id %}">
                     {% csrf_token %}
-                    <button type="submit" style="float: right;">Delete Post</button>
+                    <button type="submit" style="float: right; background-color: rgb(224, 35, 35); color: white;">Delete Post</button>
                 </form>
             </div>
         </div><br><br>

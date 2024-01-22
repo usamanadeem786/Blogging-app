@@ -19,6 +19,9 @@ class Post(models.Model):
     def like_count(self):
         return Like.objects.filter(post=self).count()
     
+    def comments_count(self):
+        return Comment.objects.filter(post=self).count()
+    
     def show_logo(self):
         return format_html('<img src="/static/%s" width="100" />' %
         self.image)
